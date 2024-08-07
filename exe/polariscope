@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'polariscope'
+
+if ARGV.empty?
+  puts 'Usage: polariscope scan'
+  exit
+end
+
+command = ARGV[0]
+
+case command
+when 'scan'
+  puts Polariscope.scan
+else
+  puts "Unknown command: #{command}"
+  puts 'Usage: polariscope scan'
+end

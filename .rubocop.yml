@@ -1,0 +1,16 @@
+inherit_gem:
+  rubocop-infinum: rubocop.yml
+
+require:
+  - rubocop-infinum
+  - rubocop-rake
+
+AllCops:
+  TargetRubyVersion: 3.0
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'exe/polariscope'
