@@ -1,24 +1,81 @@
 # Polariscope
 
-TODO: Delete this and the text below, and describe your gem
+Polariscope is a Ruby gem designed to evaluate the overall health of your Ruby application by analyzing its dependencies. It calculates a health score based on how many dependencies are outdated, meaning there are newer versions available. Keeping dependencies up-to-date is crucial for maintaining application security, performance, and compatibility. This gem provides a quick and easy way to gauge the state of your project's dependencies and take proactive measures to improve its health.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/polariscope`. To experiment with that code, run `bin/console` for an interactive prompt.
+### Health Score Algorithm
+
+The health score calculation is based on the following mathematical formula:
+
+![Health Score Algorithm](docs/algorithm.png)
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+    $ bundle add polariscope
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+    $ gem install polariscope
+
+### Known issue
+
+If your default Ruby version is 3.1.2, you might get this error when installing polariscope:
+
+```bash
+.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/rdoc-6.7.0/lib/rdoc/version.rb:8: warning: already initialized constant RDoc::VERSION
+ERROR:  While executing gem ... (NameError)
+    uninitialized constant RDoc::Markdown
+
+    'markdown' => RDoc::Markdown,
+                      ^^^^^^^^^^
+```
+
+You can ignore this error. It doesn't occur in other Ruby versions and it doesn't prevent you from using polariscope.
 
 ## Usage
 
-TODO: Write usage instructions here
+Polariscope can be used in 2 ways.
+
+### CLI
+
+Position yourself in a Ruby application and run:
+
+```bash
+polariscope scan
+```
+
+### IRB / Rails
+
+```ruby
+Polariscope.scan
+```
+
+The return value will indicate how healthy your project is on a scale from 0 to 100.
+
+#### Additional features
+
+##### Score color
+
+Get the score color for a score:
+
+```ruby
+Polariscope.score_color(60.75)
+```
+
+##### Gem versions
+
+Get the released or latest version of gems with:
+
+```ruby
+# released versions
+gem_specs = Polariscope.gem_versions(['gem_name_1', 'gem_name_2'])
+gem_specs.versions_for('gem_name_1') # => returns potentially many versions
+
+# latest version
+gem_specs = Polariscope.gem_versions(['gem_name_1', 'gem_name_2'], spec_type: :latest)
+gem_specs.versions_for('gem_name_1') # => returns latest version
+```
 
 ## Development
 
@@ -28,7 +85,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/polariscope.
+Bug reports and pull requests are welcome on GitHub at https://github.com/infinum/polariscope.
 
 ## License
 

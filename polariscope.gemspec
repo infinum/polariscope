@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Rails team']
   spec.email = ['team.rails@infinum.com']
 
-  spec.summary = 'Tool for determining the health of a project based on the state of dependencies'
+  spec.summary = 'Calculate the health score of a Ruby application based on the state of its dependencies'
   spec.homepage = 'https://github.com/infinum/polariscope'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.0.0'
@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features|sig)/|\.(?:git|circleci)|appveyor)})
+      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features|sig|docs)/|\.(?:git|circleci)|appveyor)})
     end + Dir['exe/polariscope'] + Dir['lib/**/*']
   end
   spec.bindir = 'exe'

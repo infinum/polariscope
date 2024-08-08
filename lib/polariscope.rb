@@ -22,7 +22,7 @@ module Polariscope
       Color::Hsl.for(score)
     end
 
-    def gem_versions(dependency_names, spec_type:)
+    def gem_versions(dependency_names, spec_type: :released)
       Scanner::GemVersions.new(dependency_names, spec_type: spec_type)
     end
   end
