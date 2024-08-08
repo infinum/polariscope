@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
 RSpec.describe Polariscope::Color::Hsl do
-  subject(:color) { described_class.new(health_score) }
+  describe '.for' do
+    subject(:hsl) { described_class.for(100) }
+
+    it 'instantiates new object and calls #hsl' do
+      expect(hsl).to eq('hsl(120, 100%, 45%)')
+    end
+  end
 
   describe '#hsl' do
+    subject(:color) { described_class.new(health_score) }
+
     context 'when health score is a number' do
       let(:health_score) { 50.94 }
 

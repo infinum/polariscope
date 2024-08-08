@@ -15,14 +15,13 @@ module Polariscope
       def health_score
         return nil if blank?(gemfile_content) || blank?(gemfile_lock_content)
 
-        GemfileHealthScore.new(
-          gemfile_path: gemfile_file.path,
-          gemfile_lock_content: gemfile_lock_content,
-          bundler_audit_config_path: bundler_audit_config_file.path
-        ).health_score
-      ensure
-        gemfile_file.unlink
-        bundler_audit_config_file.unlink
+        begin
+          GemfileHealthScore.new(gemfile_path: gemfile_file.path, gemfile_lock_content: gemfile_lock_content,
+                                 bundler_audit_config_path: bundler_audit_config_file.path).health_score
+        ensure
+          gemfile_file.unlink
+          bundler_audit_config_file.unlink
+        end
       end
 
       private
