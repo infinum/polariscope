@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    polariscope (0.1.0)
+    polariscope (0.1.1)
       bundler
       bundler-audit
 
