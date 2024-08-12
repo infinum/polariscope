@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.3] - 2024-08-12
+
+- Remove color#hsl feature
+
 ## [0.1.2] - 2024-08-08
 
 - Fix issue when no Gemfile found in project & reach 100% coverage with tests
