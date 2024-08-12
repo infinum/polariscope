@@ -47,14 +47,6 @@ RSpec.describe Polariscope do
     end
   end
 
-  describe '.score_color' do
-    it 'calls Color::Hsl' do
-      allow(Polariscope::Color::Hsl).to receive(:for).with(50.123).and_return('color')
-
-      expect(described_class.score_color(50.123)).to eq('color')
-    end
-  end
-
   describe '.gem_versions' do
     it 'calls Scanner::GemVersions' do
       allow(Polariscope::Scanner::GemVersions).to receive(:new).and_return(anything)

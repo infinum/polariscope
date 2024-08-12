@@ -55,14 +55,6 @@ The return value will indicate how healthy your project is on a scale from 0 to 
 
 #### Additional features
 
-##### Score color
-
-Get the score color for a score:
-
-```ruby
-Polariscope.score_color(60.75)
-```
-
 ##### Gem versions
 
 Get the released or latest version of gems with:

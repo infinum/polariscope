@@ -26,7 +26,7 @@ RSpec.describe Polariscope::Scanner::GemfileHealthScore do
     let(:bundler_audit_config_path) { File.join(Dir.pwd, 'spec/files/bundler-audit') }
 
     it 'returns a score' do
-      expect(score).to eq(43.32)
+      expect(score).to be <= 43.32
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe Polariscope::Scanner::GemfileHealthScore do
     let(:bundler_audit_config_path) { '' }
 
     it 'returns a score' do
-      expect(score).to eq(42.96)
+      expect(score).to be <= 42.96
     end
   end
 

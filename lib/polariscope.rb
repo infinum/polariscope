@@ -4,7 +4,6 @@ require_relative 'polariscope/version'
 require_relative 'polariscope/scanner/codebase_health_score'
 require_relative 'polariscope/scanner/gem_versions'
 require_relative 'polariscope/file_content'
-require_relative 'polariscope/color/hsl'
 
 module Polariscope
   Error = Class.new(StandardError)
@@ -16,10 +15,6 @@ module Polariscope
         gemfile_lock_content: gemfile_lock_content || FileContent.for('Gemfile.lock'),
         bundler_audit_config_content: bundler_audit_config_content || FileContent.for('.bundler-audit.yml')
       ).health_score
-    end
-
-    def score_color(score)
-      Color::Hsl.for(score)
     end
 
     def gem_versions(dependency_names, spec_type: :released)
