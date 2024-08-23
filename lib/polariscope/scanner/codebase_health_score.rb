@@ -17,7 +17,8 @@ module Polariscope
 
         begin
           GemfileHealthScore.new(gemfile_path: gemfile_file.path, gemfile_lock_content: gemfile_lock_content,
-                                 bundler_audit_config_path: bundler_audit_config_file.path).health_score
+                                 bundler_audit_config_path: bundler_audit_config_file.path,
+                                 update_audit_database: update_audit_database?).health_score
         ensure
           gemfile_file.unlink
           bundler_audit_config_file.unlink
@@ -50,6 +51,18 @@ module Polariscope
 
       def blank?(value)
         value.nil? || value == ''
+      end
+
+      def update_audit_database?
+        audit_db_missing? || audit_db_stale?
+      end
+
+      def audit_db_missing?
+        !Bundler::Audit::Database.exists?
+      end
+
+      def audit_db_stale?
+        ((Time.now - Bundler::Audit::Database.new.last_updated_at) / 86_400) > 7
       end
     end
   end

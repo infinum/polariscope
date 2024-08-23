@@ -20,14 +20,14 @@ RSpec.describe Polariscope do
       before do
         allow(Polariscope::FileContent).to receive(:for).with('Gemfile').and_return('Gemfile contents')
         allow(Polariscope::FileContent).to receive(:for).with('Gemfile.lock').and_return('Gemfile lock contents')
-        allow(Polariscope::FileContent).to receive(:for).with('.bundler-audit.yml').and_return('bundler audit yml contents')
+        allow(Polariscope::FileContent).to receive(:for).with('.bundler-audit.yml').and_return('audit yml contents')
       end
 
       it 'passes FileContent arguments to scanner' do
         args = {
           gemfile_content: 'Gemfile contents',
           gemfile_lock_content: 'Gemfile lock contents',
-          bundler_audit_config_content: 'bundler audit yml contents'
+          bundler_audit_config_content: 'audit yml contents'
         }
 
         described_class.scan

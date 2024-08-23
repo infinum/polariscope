@@ -11,6 +11,18 @@ AllCops:
 RSpec/MultipleExpectations:
   Max: 5
 
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Exclude:
     - 'exe/polariscope'
+
+Rails/TimeZone:
+  Enabled: false
+
+Rails/Date:
+  Enabled: false
