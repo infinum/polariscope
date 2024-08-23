@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.0] - 2024-08-23
+
+- Check if audit database is missing or stale (older than 7 weeks) & update if true
+
 ## [0.1.3] - 2024-08-12
 
 - Remove color#hsl feature
