@@ -34,7 +34,7 @@ module Polariscope
       def gemfile_file
         @gemfile_file ||= begin
           file = Tempfile.new('Gemfile')
-          file.write(gemfile_content.gsub("gemspec\n", ''))
+          file.write(gemfile_content.gsub("gemspec\n", '').gsub(/^ruby.*$\R/, ''))
           file.close
           file
         end
