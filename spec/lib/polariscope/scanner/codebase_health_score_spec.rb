@@ -118,5 +118,33 @@ RSpec.describe Polariscope::Scanner::CodebaseHealthScore do
         end
       end
     end
+
+    context 'when gemfile_content contains ruby method' do
+      let(:gemfile_content) { <<~GEMFILE }
+        ruby '2.5.5'
+        ruby('2.5.5')
+        ruby file: '.ruby-version'
+
+        gem :ruby
+      GEMFILE
+      let(:gemfile_lock_content) { 'gemfile lock content' }
+      let(:bundler_audit_config_content) { 'BundlerAuditIgnore' }
+      let(:gemfile_tempfile) { instance_double(Tempfile, write: :ok, close: :ok, unlink: :ok, path: 'Gemfile') }
+      let(:audit_tempfile) { instance_double(Tempfile, write: :ok, close: :ok, unlink: :ok, path: 'bundler-audit') }
+
+      before do
+        allow(Tempfile).to receive(:new).with('Gemfile').and_return(gemfile_tempfile)
+        allow(Tempfile).to receive(:new).with('.bundler-audit.yml').and_return(audit_tempfile)
+      end
+
+      it 'removes ruby method from the file' do
+        score
+
+        expect(Tempfile).to have_received(:new).with('Gemfile')
+        expect(gemfile_tempfile).to have_received(:write).with("\ngem :ruby\n")
+        expect(gemfile_tempfile).to have_received(:close)
+        expect(gemfile_tempfile).to have_received(:unlink)
+      end
+    end
   end
 end
