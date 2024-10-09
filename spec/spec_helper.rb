@@ -15,4 +15,15 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  database_path = File.join(__dir__, '../tmp/database')
+
+  config.before(:suite) do
+    FileUtils.rm_rf([database_path])
+    system 'git', 'clone', '--quiet', Bundler::Audit::Database::URL, database_path
+  end
+
+  config.before do
+    stub_const('Bundler::Audit::Database::DEFAULT_PATH', database_path)
+  end
 end
