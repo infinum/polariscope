@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.0] - 2024-10-17
+
+- Count Ruby advisories towards health score
+
 ## [0.2.0] - 2024-08-23
 
 - Check if audit database is missing or stale (older than 7 weeks) & update if true
