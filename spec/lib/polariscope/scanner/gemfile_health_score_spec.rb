@@ -20,23 +20,43 @@ RSpec.describe Polariscope::Scanner::GemfileHealthScore do
     it { is_expected.to be_nil }
   end
 
-  context 'when dependencies found and some new versions ignored' do
-    let(:gemfile_path) { File.join(Dir.pwd, 'spec/files/gemfile_with_dependencies') }
-    let(:gemfile_lock_content) { File.read('spec/files/gemfile.lock_with_dependencies') }
-    let(:bundler_audit_config_path) { File.join(Dir.pwd, 'spec/files/bundler-audit') }
+  # these tests run in the order they're defined and assert that each next test
+  # has a score lower than the previous one
+  describe 'scores', order: :defined do
+    last_score = nil
 
-    it 'returns a score' do
-      expect(score).to be <= 43.32
+    context 'when dependencies found and some new versions ignored' do
+      let(:gemfile_path) { File.join(Dir.pwd, 'spec/files/gemfile_with_dependencies') }
+      let(:gemfile_lock_content) { File.read('spec/files/gemfile.lock_with_dependencies') }
+      let(:bundler_audit_config_path) { File.join(Dir.pwd, 'spec/files/bundler-audit') }
+
+      it 'returns a score' do
+        expect(score).to be <= 43.32
+
+        last_score = score
+      end
     end
-  end
 
-  context 'when dependencies found and no new version is ignored' do
-    let(:gemfile_path) { File.join(Dir.pwd, 'spec/files/gemfile_with_dependencies') }
-    let(:gemfile_lock_content) { File.read('spec/files/gemfile.lock_with_dependencies') }
-    let(:bundler_audit_config_path) { '' }
+    context 'when dependencies found and no new version is ignored' do
+      let(:gemfile_path) { File.join(Dir.pwd, 'spec/files/gemfile_with_dependencies') }
+      let(:gemfile_lock_content) { File.read('spec/files/gemfile.lock_with_dependencies') }
+      let(:bundler_audit_config_path) { '' }
 
-    it 'returns a score' do
-      expect(score).to be <= 42.96
+      it 'returns a score' do
+        expect(score).to be < last_score
+
+        last_score = score
+      end
+    end
+
+    context 'when Gemfile.lock has a Ruby version' do
+      let(:gemfile_path) { File.join(Dir.pwd, 'spec/files/gemfile_with_ruby_version') }
+      let(:gemfile_lock_content) { File.read('spec/files/gemfile.lock_with_ruby_version') }
+      let(:bundler_audit_config_path) { '' }
+
+      it 'returns a score' do
+        expect(score).to be < last_score
+      end
     end
   end
 

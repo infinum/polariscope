@@ -6,6 +6,7 @@ require 'bundler/audit/database'
 require 'set'
 require_relative 'gem_versions'
 require_relative 'gem_health_score'
+require_relative 'ruby_scanner'
 
 module Polariscope
   module Scanner
@@ -30,6 +31,7 @@ module Polariscope
         update_audit_database: false, bundler_audit_config_path: ''
       )
         @lockfile_parser = Bundler::LockfileParser.new(gemfile_lock_content)
+        @ruby_scanner = RubyScanner.new(@lockfile_parser)
         @gemfile_path = gemfile_path
         @dependencies = installed_dependencies
         @gem_priorities = gem_priorities
@@ -54,6 +56,7 @@ module Polariscope
 
       attr_reader :dependencies
       attr_reader :lockfile_parser
+      attr_reader :ruby_scanner
       attr_reader :advisory_penalty_map
       attr_reader :fallback_advisory_penalty
       attr_reader :bundler_audit_config_path
@@ -127,6 +130,7 @@ module Polariscope
 
         lockfile_parser.specs
                        .flat_map { |gem| database.check_gem(gem).to_a }
+                       .concat(ruby_scanner.vulnerable_advisories)
                        .reject { |advisory| ignored_advisories.intersect?(advisory.identifiers.to_set) }
       end
 

@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '3.0.0'
+
+gem 'rails', '~> 7.0.0.0'
+gem 'shrine'
+gem 'sidekiq', '~> 6'
+
+group :development, :test do
+  gem 'rspec-rails', '~> 5'
+end
