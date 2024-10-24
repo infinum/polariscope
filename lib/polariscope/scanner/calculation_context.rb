@@ -3,7 +3,7 @@
 module Polariscope
   module Scanner
     class CalculationContext
-      DEPENDENCY_PRIORITIES = { rails: 10.0 }.freeze
+      DEPENDENCY_PRIORITIES = { ruby: 10.0, rails: 10.0 }.freeze
       GROUP_PRIORITIES = { default: 2.0, production: 2.0 }.freeze
       DEFAULT_DEPENDENCY_PRIORITY = 1.0
 
