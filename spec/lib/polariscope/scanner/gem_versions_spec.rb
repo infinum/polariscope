@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Polariscope::Scanner::GemVersions do
-  subject(:scanner) { described_class.new(['devise', 'rails'], spec_type: :released) }
+  subject(:scanner) { described_class.new(dependencies, spec_type: :released) }
 
   before do
     gem_tuples = [
@@ -27,8 +27,24 @@ RSpec.describe Polariscope::Scanner::GemVersions do
   end
 
   describe '#versions_for' do
+    let(:dependencies) { ['devise', 'rails'] }
+
+    before { allow(Polariscope::Scanner::RubyVersions).to receive(:available_versions) }
+
     it 'returns only distinct versions for given gem name' do
       expect(scanner.versions_for('devise').map(&:to_s)).to contain_exactly('4.6.2', '4.5.0')
+
+      expect(Polariscope::Scanner::RubyVersions).not_to have_received(:available_versions)
+    end
+
+    context 'when ruby is in dependencies' do
+      let(:dependencies) { ['devise', 'ruby', 'rails'] }
+
+      it 'fetches ruby versions' do
+        scanner
+
+        expect(Polariscope::Scanner::RubyVersions).to have_received(:available_versions)
+      end
     end
   end
 end
