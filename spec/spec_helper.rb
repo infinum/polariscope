@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  enable_coverage :branch
+  primary_coverage :branch
+end
+
 require 'polariscope'
 require 'pry'
 
