@@ -13,8 +13,8 @@ module Polariscope
         return 1.0 if up_to_date?
 
         score = 1.0
-        score *= (1.0 + first_outdated_segment)**-Math.log(first_outdated_segment_severity)
-        score *= (1.0 + new_versions.count)**-Math.log(calculation_context.new_versions_severity)
+        score *= (1 + first_outdated_segment)**-Math.log(first_outdated_segment_severity)
+        score *= (1 + new_versions.count)**-Math.log(calculation_context.new_versions_severity)
         score
       end
 
