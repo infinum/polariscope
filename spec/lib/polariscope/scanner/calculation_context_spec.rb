@@ -128,4 +128,18 @@ RSpec.describe Polariscope::Scanner::CalculationContext do
       end
     end
   end
+
+  describe '#major_version_penalty' do
+    it 'returns default major version penalty' do
+      expect(calculation_context.major_version_penalty).to eq(1)
+    end
+
+    context 'with custom opts' do
+      let(:opts) { { major_version_penalty: 2 } }
+
+      it 'returns major version penalty' do
+        expect(calculation_context.major_version_penalty).to eq(2)
+      end
+    end
+  end
 end

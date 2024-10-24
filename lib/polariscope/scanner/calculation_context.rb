@@ -17,6 +17,7 @@ module Polariscope
       }.freeze
       FALLBACK_ADVISORY_PENALTY = 0.5
 
+      MAJOR_VERSION_PENALTY = 1
       NEW_VERSIONS_SEVERITY = 1.07
       SEGMENT_SEVERITIES = [1.7, 1.15, 1.01, 1.005].freeze
       FALLBACK_SEGMENT_SEVERITY = 1.0
@@ -30,6 +31,7 @@ module Polariscope
         @advisory_penalties = opts.fetch(:advisory_penalties, ADVISORY_PENALTIES)
         @fallback_advisory_penalty = opts.fetch(:fallback_advisory_penalty, FALLBACK_ADVISORY_PENALTY)
 
+        @major_version_penalty = opts.fetch(:major_version_penalty, MAJOR_VERSION_PENALTY)
         @new_versions_severity = opts.fetch(:new_versions_severity, NEW_VERSIONS_SEVERITY)
         @segment_severities = opts.fetch(:segment_severities, SEGMENT_SEVERITIES)
         @fallback_segment_severity = opts.fetch(:fallback_segment_severity, FALLBACK_SEGMENT_SEVERITY)
@@ -53,6 +55,7 @@ module Polariscope
 
       attr_reader :advisory_severity
       attr_reader :new_versions_severity
+      attr_reader :major_version_penalty
 
       private
 
