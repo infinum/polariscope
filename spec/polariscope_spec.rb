@@ -6,13 +6,13 @@ RSpec.describe Polariscope do
   end
 
   describe '.scan' do
-    let(:scanner) { instance_double(Polariscope::Scanner::CodebaseHealthScore, health_score: 100) }
+    let(:scanner) { instance_double(Polariscope::Scanner::GemfileHealthScore, health_score: 100) }
 
     before do
-      allow(Polariscope::Scanner::CodebaseHealthScore).to receive(:new).and_return(scanner)
+      allow(Polariscope::Scanner::GemfileHealthScore).to receive(:new).and_return(scanner)
     end
 
-    it 'calls Scanner::CodebaseHealthScore' do
+    it 'calls Scanner::GemfileHealthScore' do
       expect(described_class.scan).to eq(100)
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Polariscope do
 
         described_class.scan
 
-        expect(Polariscope::Scanner::CodebaseHealthScore).to have_received(:new).with(**args)
+        expect(Polariscope::Scanner::GemfileHealthScore).to have_received(:new).with(**args)
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Polariscope do
 
         described_class.scan(**args)
 
-        expect(Polariscope::Scanner::CodebaseHealthScore).to have_received(:new).with(**args)
+        expect(Polariscope::Scanner::GemfileHealthScore).to have_received(:new).with(**args)
       end
     end
   end
