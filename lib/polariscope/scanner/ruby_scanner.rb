@@ -6,12 +6,12 @@ require 'bundler/audit/database'
 module Polariscope
   module Scanner
     class RubyScanner
-      def initialize(lockfile_parser)
-        @lockfile_parser = lockfile_parser
+      def initialize(bundler_ruby_version)
+        @bundler_ruby_version = bundler_ruby_version
       end
 
       def version
-        lockfile_ruby_version&.gem_version
+        bundler_ruby_version&.gem_version
       end
 
       def vulnerable_advisories
@@ -20,8 +20,7 @@ module Polariscope
 
       private
 
-      attr_reader :lockfile_parser
-      attr_reader :bundler_audit_database
+      attr_reader :bundler_ruby_version
 
       def advisories
         cve_paths.map { |path| Bundler::Audit::Advisory.load(path) }
@@ -34,11 +33,7 @@ module Polariscope
       end
 
       def engine
-        lockfile_ruby_version.engine
-      end
-
-      def lockfile_ruby_version
-        @lockfile_ruby_version ||= Bundler::RubyVersion.from_string(@lockfile_parser.ruby_version)
+        bundler_ruby_version.engine
       end
     end
   end
