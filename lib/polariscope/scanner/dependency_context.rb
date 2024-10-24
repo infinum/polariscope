@@ -3,6 +3,7 @@
 require_relative 'ruby_scanner'
 
 require 'tempfile'
+require 'bundler/audit/configuration'
 
 module Polariscope
   module Scanner
