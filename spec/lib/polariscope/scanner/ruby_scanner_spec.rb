@@ -12,7 +12,7 @@ RSpec.describe Polariscope::Scanner::RubyScanner do
       end
     end
 
-    context "when bundler ruby version doesn't" do
+    context "when bundler ruby version doesn't exist" do
       let(:bundler_ruby_version) { nil }
 
       it 'returns nil' do
@@ -31,7 +31,7 @@ RSpec.describe Polariscope::Scanner::RubyScanner do
       end
     end
 
-    context "when bundler ruby version doesn't" do
+    context "when bundler ruby version doesn't exist" do
       let(:bundler_ruby_version) { nil }
 
       it 'returns an empty array' do

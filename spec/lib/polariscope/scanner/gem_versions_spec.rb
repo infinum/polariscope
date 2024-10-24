@@ -3,8 +3,8 @@
 RSpec.describe Polariscope::Scanner::GemVersions do
   subject(:scanner) { described_class.new(['devise', 'rails'], spec_type: :released) }
 
-  let(:gem_tuples) do
-    [
+  before do
+    gem_tuples = [
       [
         Gem::NameTuple.new('devise', Gem::Version.new('4.6.2')),
         anything
@@ -22,9 +22,7 @@ RSpec.describe Polariscope::Scanner::GemVersions do
         anything
       ]
     ]
-  end
 
-  before do
     allow(Gem::SpecFetcher.fetcher).to receive(:detect).with(:released).and_return(gem_tuples)
   end
 
