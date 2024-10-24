@@ -21,8 +21,5 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - 'exe/polariscope'
 
-Rails/TimeZone:
-  Enabled: false
-
-Rails/Date:
+Rails:
   Enabled: false
