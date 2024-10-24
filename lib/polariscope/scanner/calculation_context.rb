@@ -19,7 +19,7 @@ module Polariscope
 
       MAJOR_VERSION_PENALTY = 1
       NEW_VERSIONS_SEVERITY = 1.07
-      SEGMENT_SEVERITIES = [1.7, 1.15, 1.01, 1.005].freeze
+      SEGMENT_SEVERITIES = [1.7, 1.15, 1.01].freeze
       FALLBACK_SEGMENT_SEVERITY = 1.0
 
       def initialize(**opts)
