@@ -23,11 +23,9 @@ module Polariscope
       attr_reader :spec_type
       attr_reader :gem_versions
 
-      # rubocop:disable Style/HashEachMethods
       def fetch_gems
-        gem_tuples.each { |name_tuple, _| gem_versions[name_tuple.name] << name_tuple.version }
+        gem_tuples.each { |(name_tuple, _)| gem_versions[name_tuple.name] << name_tuple.version }
       end
-      # rubocop:enable all
 
       def gem_tuples
         Gem::SpecFetcher.fetcher.detect(spec_type) { |name_tuple| dependency_names.include?(name_tuple.name) }
