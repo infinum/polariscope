@@ -8,23 +8,29 @@ module Polariscope
       def initialize(dependency_names, spec_type:)
         @dependency_names = dependency_names.to_set
         @spec_type = spec_type
-        @gem_versions = Hash.new { |h, k| h[k] = [] }
+        @gem_versions = Hash.new { |h, k| h[k] = Set.new }
 
         fetch_gems
       end
 
       def versions_for(gem_name)
-        @gem_versions[gem_name]
+        gem_versions[gem_name]
       end
 
       private
 
-      def fetch_gems
-        gem_tuples = Gem::SpecFetcher.fetcher.detect(@spec_type) do |name_tuple|
-          @dependency_names.include?(name_tuple.name)
-        end
+      attr_reader :dependency_names
+      attr_reader :spec_type
+      attr_reader :gem_versions
 
-        gem_tuples.each { |gem_tuple| @gem_versions[gem_tuple.first.name] << gem_tuple.first.version }
+      # rubocop:disable Style/HashEachMethods
+      def fetch_gems
+        gem_tuples.each { |name_tuple, _| gem_versions[name_tuple.name] << name_tuple.version }
+      end
+      # rubocop:enable all
+
+      def gem_tuples
+        Gem::SpecFetcher.fetcher.detect(spec_type) { |name_tuple| dependency_names.include?(name_tuple.name) }
       end
     end
   end
