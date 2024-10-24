@@ -2,7 +2,7 @@
 
 module Polariscope
   module Scanner
-    class AdvisoryHealthScore
+    class AdvisoriesHealthScore
       def initialize(dependency_context, calculation_context)
         @dependency_context = dependency_context
         @calculation_context = calculation_context
