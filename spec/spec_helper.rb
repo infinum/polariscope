@@ -20,7 +20,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     FileUtils.rm_rf([database_path])
-    system 'git', 'clone', '--quiet', Bundler::Audit::Database::URL, database_path
+    system 'git', 'clone', '--quiet', '--depth', '1', Bundler::Audit::Database::URL, database_path
   end
 
   config.before do
