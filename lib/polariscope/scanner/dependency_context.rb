@@ -22,7 +22,7 @@ module Polariscope
       end
 
       def dependencies
-        bundle_definition.dependencies
+        @dependencies ||= dependencies_with_ruby
       end
 
       def dependency_versions(dependency)
@@ -67,7 +67,17 @@ module Polariscope
       end
 
       def current_dependency_version(dependency)
+        return ruby_scanner.version if dependency.name == GemVersions::RUBY_NAME
+
         specs.find { |spec| dependency.name == spec.name }.version
+      end
+
+      def dependencies_with_ruby
+        if ruby_scanner.version
+          bundle_definition.dependencies + [Bundler::Dependency.new(GemVersions::RUBY_NAME, false)]
+        else
+          bundle_definition.dependencies
+        end
       end
 
       def specs

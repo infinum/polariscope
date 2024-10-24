@@ -54,55 +54,99 @@ RSpec.describe Polariscope::Scanner::DependencyContext do
   end
 
   describe '#dependencies' do
-    let(:opts) do
-      {
-        gemfile_content: File.read('spec/files/gemfile_with_dependencies'),
-        gemfile_lock_content: File.read('spec/files/gemfile.lock_with_dependencies')
-      }
+    context "when gemfile lock doesn't have a ruby version" do
+      let(:opts) do
+        {
+          gemfile_content: File.read('spec/files/gemfile_with_dependencies'),
+          gemfile_lock_content: File.read('spec/files/gemfile.lock_with_dependencies')
+        }
+      end
+
+      it 'returns dependencies without ruby' do
+        expect(dependency_context.dependencies.map(&:class).uniq).to contain_exactly(Bundler::Dependency)
+        expect(dependency_context.dependencies.map(&:name)).to contain_exactly('rails', 'shrine', 'sidekiq',
+                                                                               'rspec-rails')
+      end
     end
 
-    it 'returns dependencies' do
-      expect(dependency_context.dependencies.map(&:class).uniq).to contain_exactly(Bundler::Dependency)
-      expect(dependency_context.dependencies.map(&:name)).to contain_exactly('rails', 'shrine', 'sidekiq',
-                                                                             'rspec-rails')
+    context 'when gemfile lock has a ruby version' do
+      let(:opts) do
+        {
+          gemfile_content: File.read('spec/files/gemfile_with_ruby_version'),
+          gemfile_lock_content: File.read('spec/files/gemfile.lock_with_ruby_version')
+        }
+      end
+
+      it 'returns dependencies with ruby' do
+        expect(dependency_context.dependencies.map(&:class).uniq).to contain_exactly(Bundler::Dependency)
+        expect(dependency_context.dependencies.map(&:name)).to contain_exactly('rails', 'shrine', 'sidekiq',
+                                                                               'rspec-rails', 'ruby')
+      end
     end
   end
 
   describe '#dependency_versions' do
-    let(:opts) do
-      {
-        gemfile_content: File.read('spec/files/gemfile_with_dependencies'),
-        gemfile_lock_content: File.read('spec/files/gemfile.lock_with_dependencies')
-      }
-    end
+    context "when gemfile lock doesn't have a ruby version" do
+      let(:opts) do
+        {
+          gemfile_content: File.read('spec/files/gemfile_with_dependencies'),
+          gemfile_lock_content: File.read('spec/files/gemfile.lock_with_dependencies')
+        }
+      end
 
-    let(:dependency) { Bundler::Dependency.new('rails', false) }
+      let(:dependency) { Bundler::Dependency.new('rails', false) }
 
-    before do
-      gem_tuples = [
-        [
-          Gem::NameTuple.new('rails', Gem::Version.new('5.0.0')),
-          anything
-        ],
-        [
-          Gem::NameTuple.new('rails', Gem::Version.new('6.0.0')),
-          anything
-        ],
-        [
-          Gem::NameTuple.new('rails', Gem::Version.new('7.0.0')),
-          anything
+      before do
+        gem_tuples = [
+          [
+            Gem::NameTuple.new('rails', Gem::Version.new('5.0.0')),
+            anything
+          ],
+          [
+            Gem::NameTuple.new('rails', Gem::Version.new('6.0.0')),
+            anything
+          ],
+          [
+            Gem::NameTuple.new('rails', Gem::Version.new('7.0.0')),
+            anything
+          ]
         ]
-      ]
 
-      allow(Gem::SpecFetcher.fetcher).to receive(:detect).with(:released).and_return(gem_tuples)
+        allow(Gem::SpecFetcher.fetcher).to receive(:detect).with(:released).and_return(gem_tuples)
+      end
+
+      it 'returns current version and all dependency versions' do
+        current_version, all_versions = dependency_context.dependency_versions(dependency)
+
+        expect(current_version).to eq(Gem::Version.new('7.0.0'))
+        expect(all_versions).to contain_exactly(Gem::Version.new('5.0.0'), Gem::Version.new('6.0.0'),
+                                                Gem::Version.new('7.0.0'))
+      end
     end
 
-    it 'returns current version and all dependency versions' do
-      current_version, all_versions = dependency_context.dependency_versions(dependency)
+    context 'when gemfile lock has a ruby version' do
+      let(:opts) do
+        {
+          gemfile_content: File.read('spec/files/gemfile_with_ruby_version'),
+          gemfile_lock_content: File.read('spec/files/gemfile.lock_with_ruby_version')
+        }
+      end
 
-      expect(current_version).to eq(Gem::Version.new('7.0.0'))
-      expect(all_versions).to contain_exactly(Gem::Version.new('5.0.0'), Gem::Version.new('6.0.0'),
-                                              Gem::Version.new('7.0.0'))
+      let(:dependency) { Bundler::Dependency.new('ruby', false) }
+
+      before do
+        available_versions = Set[Gem::Version.new('2.5.0'), Gem::Version.new('2.6.0')]
+
+        allow(Gem::SpecFetcher.fetcher).to receive(:detect).with(:released).and_return([])
+        allow(Polariscope::Scanner::RubyVersions).to receive(:available_versions).and_return(available_versions)
+      end
+
+      it 'returns current version and all dependency versions' do
+        current_version, all_versions = dependency_context.dependency_versions(dependency)
+
+        expect(current_version).to eq(Gem::Version.new('2.5.0'))
+        expect(all_versions).to contain_exactly(Gem::Version.new('2.5.0'), Gem::Version.new('2.6.0'))
+      end
     end
   end
 
