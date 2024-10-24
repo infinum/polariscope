@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'bundler'
 require 'bundler/audit/database'
 
 module Polariscope
