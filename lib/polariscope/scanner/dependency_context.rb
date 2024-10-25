@@ -73,11 +73,9 @@ module Polariscope
       end
 
       def dependencies_with_ruby
-        if ruby_scanner.version
-          bundle_definition.dependencies + [Bundler::Dependency.new(GemVersions::RUBY_NAME, false)]
-        else
-          bundle_definition.dependencies
-        end
+        return bundle_definition.dependencies unless ruby_scanner.version
+
+        bundle_definition.dependencies + [Bundler::Dependency.new(GemVersions::RUBY_NAME, false)]
       end
 
       def specs
