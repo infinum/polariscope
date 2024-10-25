@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.4.0] - 2024-10-25
+
+- Count Ruby versions towards health score
+- Update audit database if older than one day
+
 ## [0.3.0] - 2024-10-17
 
 - Count Ruby advisories towards health score
