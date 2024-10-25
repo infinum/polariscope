@@ -10,3 +10,6 @@ gem 'sidekiq', '~> 6'
 group :development, :test do
   gem 'rspec-rails', '~> 5'
 end
+
+# dependency which is installed only on some platforms
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

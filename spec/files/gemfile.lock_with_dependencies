@@ -191,6 +191,7 @@ DEPENDENCIES
   rspec-rails (~> 5)
   shrine
   sidekiq (~> 6)
+  tzinfo-data
 
 BUNDLED WITH
    2.5.17
