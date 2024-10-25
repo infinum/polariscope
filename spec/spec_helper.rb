@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  enable_coverage :branch
+  primary_coverage :branch
+end
+
 require 'polariscope'
 require 'pry'
 
@@ -20,7 +25,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     FileUtils.rm_rf([database_path])
-    system 'git', 'clone', '--quiet', Bundler::Audit::Database::URL, database_path
+    system 'git', 'clone', '--quiet', '--depth', '1', Bundler::Audit::Database::URL, database_path
   end
 
   config.before do

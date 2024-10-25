@@ -3,29 +3,37 @@
 module Polariscope
   module Scanner
     class GemHealthScore
-      def initialize(all_versions:, current_version:, severities: [])
-        @all_versions = all_versions
-        @current_version = current_version
-        @severities = severities
+      def initialize(dependency_context, calculation_context, dependency)
+        @calculation_context = calculation_context
+
+        @current_version, @all_versions = dependency_context.dependency_versions(dependency)
       end
 
       def health_score
-        return 100 if up_to_date?
+        return 1.0 if up_to_date?
 
-        score = 100
-        score *= (1.0 + first_outdated_segment)**-Math.log(first_outdated_segment_severity)
-        score *= (1.0 + new_versions.count)**-Math.log(1.07)
+        score = 1.0
+        score *= (1 + first_outdated_segment)**-Math.log(first_outdated_segment_severity)
+        score *= (1 + new_versions.count)**-Math.log(calculation_context.new_versions_severity)
         score
       end
+
+      def major_version_penalty
+        major_version_outdated? ? calculation_context.major_version_penalty : 0
+      end
+
+      private
+
+      attr_reader :calculation_context
+      attr_reader :current_version
+      attr_reader :all_versions
 
       def up_to_date?
         current_version == latest_version
       end
 
       def first_outdated_segment_severity
-        return 1 if first_outdated_segment_index.nil?
-
-        severities[first_outdated_segment_index]
+        calculation_context.segment_severity(first_outdated_segment_index)
       end
 
       def first_outdated_segment_index
@@ -36,17 +44,15 @@ module Polariscope
         segments_delta.find(&:positive?) || 0
       end
 
+      def major_version_outdated?
+        segments_delta.first.positive?
+      end
+
       def segments_delta
-        current_version.segments.grep(Integer).zip(latest_version.segments.grep(Integer))
-                       .map { |current, latest| current && latest ? latest - current : 0 }
-      end
-
-      def major_version_penalty
-        major_outdated? ? 1 : 0
-      end
-
-      def major_outdated?
-        latest_version.segments[0] > current_version.segments[0]
+        @segments_delta ||=
+          version_segments(latest_version)
+          .zip(version_segments(current_version))
+          .map { |latest, current| latest && current ? latest - current : 0 }
       end
 
       def latest_version
@@ -57,11 +63,9 @@ module Polariscope
         @new_versions ||= all_versions.select { |version| version > current_version }
       end
 
-      private
-
-      attr_reader :all_versions
-      attr_reader :current_version
-      attr_reader :severities
+      def version_segments(version)
+        version.segments.grep(Integer)
+      end
     end
   end
 end
