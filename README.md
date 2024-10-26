@@ -162,7 +162,7 @@ Score which represents how many security advisories impact your dependencies. Un
 
 ### Penalty and severity function
 
-Function used for several scores is of type $f(x)=(1+x)^{-S}$, where $S$ is some positive constant.$^*$
+Function used for several scores is of type $f(x)=(1+x)^{-S}$, where $S$ is some positive constant.$`^*`$
 
 See this graph for various values $S$ (we'll focus on case $x\ge0$):
 ![graph plots f(x) for three values of S: 0.05, 0.17, 0.5](./docs/severity_function_graph.png)
