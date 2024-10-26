@@ -106,7 +106,7 @@ How much the score changes depends on various factors:
 G & \text{Gemfile} \\
 G_{dd} & \text{subset of Gemfile with direct dependencies only} \\
 d & \text{dependency} \\
-... & \text{see below for other symbols}
+\dotso & \text{see below for other symbols}
 \end{array}
 ```
 
@@ -120,7 +120,7 @@ Score which signals how many dependencies have outdated major versions (it doesn
 
 [The formula](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gemfile_health_score.rb#L30-L36) $1-\frac{\sum_{d \in G_{dd}}w_d \cdot mp_d}{\sum_{d \in G_{dd}}w_d}$ starts with score $1$ and is subtracted by the [weighted arithmetic mean](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean) of major version penalties for all direct dependencies (only dependencies specified in the `Gemfile` and not dependencies of dependencies present in `Gemfile.lock`).
 
-[Dependency priority (weight)](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L40-L44) $w_d$ is either a custom dependency priority, bundler group priority if dependency doesn't have a custom priority, or default priority if dependency's group doesn't have a defined priority (find default values [here](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L6-L8)).
+[Dependency priority (weight)](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L40-L44) $w_d$ is either a custom dependency priority, bundler group priority if dependency doesn't have a custom priority, or default priority if dependency's group doesn't have a defined priority ([default value](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L6-L8)).
 
 [Major version penalty](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gem_health_score.rb#L21-L23) ${mp}_d$ equals $1$ ([by default](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L20)) when major of $d$ is outdated, otherwise $0$.
 
@@ -128,7 +128,7 @@ Score which signals how many dependencies have outdated major versions (it doesn
 
 Score which represents how outdated direct dependencies are based on the number of new versions and the kind of outdatedness. Score $1$ means all dependencies are up-to-date. As dependencies get outdated, it starts to lower. Unlike major versions score, this score can never reach $0$, it only gravitates towards it.
 
-[The formula](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gemfile_health_score.rb#L38-L40) $\frac{\sum_{d \in G_{dd}}w_d \cdot {dhs}_d}{\sum_{d \in G_{dd}}w_d}$ is a weighted arithmetic mean of dependency health scores. Same dependency priority $w_d$ is used as for major versions score.
+[The formula](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gemfile_health_score.rb#L38-L40) $`\frac{\sum_{d \in G_{dd}}w_d \cdot {dhs}_d}{\sum_{d \in G_{dd}}w_d}`$ is a weighted arithmetic mean of dependency health scores. Same dependency priority $w_d$ is used as for major versions score.
 
 [Dependency health score](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gem_health_score.rb#L15-L18) ${dhs}_d$ is calculated with the following formula:
 ```math
@@ -148,7 +148,7 @@ Score which represents how outdated direct dependencies are based on the number 
 
 #### Versions subscore
 
-[Score](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gem_health_score.rb#L17) in range $(0,1]$ which represents how many new versions have been released for the dependency since the current version. Penalty ${vp}_d$ is defined as the total number of versions between the current and the latest version (inclusive). Severity $S_{V}$ is a constant (find default value [here](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L21)).
+[Score](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/gem_health_score.rb#L17) in range $(0,1]$ which represents how many new versions have been released for the dependency since the current version. Penalty $`{vp}_d`$ is defined as the total number of versions between the current and the latest version (inclusive). Severity $`S_{V}`$ is a constant ([default value](https://github.com/infinum/polariscope/blob/master/lib/polariscope/scanner/calculation_context.rb#L21)).
 
 (For more context on the function used for both subscores, see [this section](#penalty-and-severity-function).)
 
