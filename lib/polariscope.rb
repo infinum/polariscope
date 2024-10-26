@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'bundler'
+
 require_relative 'polariscope/version'
 require_relative 'polariscope/scanner/gemfile_health_score'
 require_relative 'polariscope/scanner/gem_versions'
