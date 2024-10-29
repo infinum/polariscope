@@ -177,7 +177,7 @@ and notice several interesting properties:
 
 The function returns values in range $(0,1]$ (props 1-3). It begins with value 1 (prop 1) which drops the further away we move from $x=0$ (prop 2). Property 4 allows us to control how quickly the value drops.
 
-This can be used a simple but an okay way to model certain scores. For scoring purposes we will refer to $x$ as penalty and $S$ as severity. Take for example the [versions subscore](#versions-subscore), which uses this function: penalty is the number of new versions for a dependency, so the more new versions there are, the lower the score.
+This can be used as a simple but an okay way to model certain scores. For scoring purposes we will refer to $x$ as penalty and $S$ as severity. Take for example the [versions subscore](#versions-subscore), which uses this function: penalty is the number of new versions for a dependency, so the more new versions there are, the lower the score.
 
 $^*$ In all formulas, severity is a natural logarithm $ln$ of some constant greater than 1. This is purely because actual constants $S$ need to be small enough (smaller than 0.1) to not cause too sharp a drop in the score too fast. It's easier to work with bigger numbers, so instead of $(1+x)^{-S}$ we work with $(1+x)^{-\ln(S)}$.
 
