@@ -83,6 +83,21 @@ RSpec.describe Polariscope::Scanner::DependencyContext do
                                                                                'rspec-rails', 'ruby')
       end
     end
+
+    context 'when gemfile has unparseable content' do
+      let(:opts) do
+        {
+          gemfile_content: File.read('spec/files/gemfile_unparseable'),
+          gemfile_lock_ontent: File.read('spec/files/gemfile.lock_unparseable')
+        }
+      end
+
+      it 'raises an error' do
+        expect do
+          dependency_context.dependencies
+        end.to raise_error(Polariscope::Error, %r{^Unable to parse the provided Gemfile/Gemfile.lock:})
+      end
+    end
   end
 
   describe '#dependency_versions' do

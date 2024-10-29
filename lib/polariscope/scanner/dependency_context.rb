@@ -51,7 +51,7 @@ module Polariscope
         @gem_versions ||= GemVersions.new(dependencies.map(&:name), spec_type: spec_type)
       end
 
-      def bundle_definition
+      def bundle_definition # rubocop:disable Metrics/MethodLength
         @bundle_definition ||=
           ::Tempfile.create do |gemfile|
             ::Tempfile.create do |gemfile_lock|
@@ -64,6 +64,8 @@ module Polariscope
               Bundler::Definition.build(gemfile.path, gemfile_lock.path, false)
             end
           end
+      rescue Bundler::Dsl::DSLError => e
+        raise Polariscope::Error, "Unable to parse the provided Gemfile/Gemfile.lock: #{e.message}"
       end
 
       def current_dependency_version(dependency)

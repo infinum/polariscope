@@ -1,0 +1,3 @@
+source 'https://rubygems.org'
+
+eval File.read('unavailable_file')
