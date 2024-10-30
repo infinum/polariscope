@@ -193,9 +193,11 @@ As was said above, health score is most useful as a relative measure. It starts 
 
 It's up to you to decide when to take action: either when the score drops suddenly (to fix immediate issues) or when it drops below a certain threshold (to update multiple dependencies in one go).
 
-At Infinum, Polariscope is used as part of a monitoring tool that (among other things) calculates health scores for all Ruby projects daily. Part of the project table looks like this:
-
+At Infinum, Polariscope is used as part of a monitoring tool that (among other things) calculates health scores for all Ruby projects daily. Part of the project table looks like this:<br />
 <img src="./docs/health_score_table.png" alt="table with project health scores" width="450">
+
+The health score is also shown as a badge on the repository README:<br />
+<img src="./docs/health_score_badge.png" alt="repo readme with health score badge" width="300">
 
 ## Development
 
