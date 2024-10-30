@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.5.0] - 2024-10-30
+
+- Fix regression for standalone installation
+- Raise `Polariscope::Error` on unparseable Gemfile
+
 ## [0.4.0] - 2024-10-25
 
 - Count Ruby versions towards health score
