@@ -12,11 +12,12 @@ module Polariscope
 
   class << self
     def scan(**opts)
-      Scanner::GemfileHealthScore.new(**opts.merge(
+      Scanner::GemfileHealthScore.new(
+        **opts,
         gemfile_content: opts.fetch(:gemfile_content, FileContent.for('Gemfile')),
         gemfile_lock_content: opts.fetch(:gemfile_lock_content, FileContent.for('Gemfile.lock')),
         bundler_audit_config_content: opts.fetch(:bundler_audit_config_content, FileContent.for('.bundler-audit.yml'))
-      )).health_score
+      ).health_score
     end
 
     def gem_versions(dependency_names, spec_type: Scanner::DependencyContext::DEFAULT_SPEC_TYPE)
