@@ -13,7 +13,7 @@ module Polariscope
         @dependency_context = DependencyContext.new(**opts)
         @calculation_context = CalculationContext.new(**opts)
 
-        AuditDatabase.update_if_necessary
+        AuditDatabase.update_if_necessary if opts.fetch(:update_audit_database, true)
       end
 
       def health_score
