@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.0] - 2024-11-11
+
 - Add `update_audit_database` option to `Polariscope.scan` to control whether to update the audit DB
 
 ## [0.5.0] - 2024-10-30
