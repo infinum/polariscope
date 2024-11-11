@@ -53,6 +53,7 @@ Polariscope.scan(
   new_versions_severity: 1.09, # number >= 1
   segment_severities: [1.7, 1.15, 1.01], # ordered by segments: [major, minor, patch]
   fallback_segment_severity: 1.01, # in case dependency versions have more segments than in segment_severities
+  update_audit_database: false, # Polariscope by default updates audit DB if it's older more than one day
 )
 ```
 

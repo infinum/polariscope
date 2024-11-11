@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Add `update_audit_database` option to `Polariscope.scan` to control whether to update the audit DB
+
 ## [0.5.0] - 2024-10-30
 
 - Fix regression for standalone installation
